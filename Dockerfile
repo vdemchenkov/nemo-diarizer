@@ -18,6 +18,10 @@ RUN pip install --no-cache-dir \
     "torchaudio==2.4.0" \
     --index-url https://download.pytorch.org/whl/cu124
 
+# nn.Buffer — type annotation требующая PyTorch 2.5+, нам не нужна (diarization не использует context biasing)
+RUN find /usr/local/lib -name "biasing_multi_model.py" -exec \
+    sed -i 's/nn\.Buffer | nn\.Parameter/nn.Parameter/g' {} \;
+
 WORKDIR /app
 COPY handler.py .
 
